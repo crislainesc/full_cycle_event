@@ -11,8 +11,8 @@ Content-Type: application/json
 {
     "items": [
         {
-            "product_id": 1,
-            "quantity": 1
+            "product_id": 3,
+            "quantity": 5
         }
     ]
 }

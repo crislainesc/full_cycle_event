@@ -3,6 +3,7 @@ import { CreateCheckoutDto } from './dto/create-checkout.dto';
 import { Checkout } from './entities/checkout.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 
 const PRODUCTS_LIST = [
   {
@@ -52,6 +53,7 @@ export class CheckoutsService {
   constructor(
     @InjectRepository(Checkout)
     private checkoutRepository: Repository<Checkout>,
+    private amqpConnection: AmqpConnection,
   ) {}
 
   async create(createCheckoutDto: CreateCheckoutDto) {
@@ -77,6 +79,10 @@ export class CheckoutsService {
     });
 
     await this.checkoutRepository.save(checkout);
+    await this.amqpConnection.publish('amq.direct', 'checkout.created', {
+      checkout_id: checkout.id,
+      total: checkout.total,
+    });
     return checkout;
   }
 

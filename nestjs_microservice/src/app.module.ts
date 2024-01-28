@@ -8,6 +8,8 @@ import {
   CheckoutItem,
   CheckoutProduct,
 } from './checkouts/entities/checkout.entity';
+import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -24,6 +26,10 @@ import {
     }),
 
     CheckoutsModule,
+
+    RabbitmqModule,
+
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
