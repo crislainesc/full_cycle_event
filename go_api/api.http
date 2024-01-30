@@ -1,0 +1,46 @@
+POST http://localhost:8080/category HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "name": "Category 2",
+    "description": "Category 2 description"
+}
+
+###
+GET http://localhost:8080/category/2dcab1d8-3081-4e89-88a6-38dd217ad41a HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+###
+GET http://localhost:8080/category HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+###
+POST http://localhost:8080/product HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "name": "Product 1",
+    "description": "Product 1 description",
+    "price": 5.55,
+    "image_url": "http://via.placeholder.com/100x400",
+    "category_id": "b1ef1d15-4a2e-44e6-964d-fe5e33885578"
+}
+
+###
+GET http://localhost:8080/product/8cef8927-be77-4532-91df-9d96e55d5a15 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+###
+GET http://localhost:8080/product HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+###
+GET http://localhost:8080/product/category/b1ef1d15-4a2e-44e6-964d-fe5e33885578 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json

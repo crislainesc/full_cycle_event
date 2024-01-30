@@ -10,6 +10,10 @@ type ProductDB struct {
 	db *sql.DB
 }
 
+func NewProductDB(db *sql.DB) *ProductDB {
+	return &ProductDB{db}
+}
+
 func (pd *ProductDB) GetProducts() ([]*entity.Product, error) {
 	rows, err := pd.db.Query("select id, name, description, price, category_id, image_url from products")
 	if err != nil {
@@ -29,13 +33,12 @@ func (pd *ProductDB) GetProducts() ([]*entity.Product, error) {
 }
 
 func (pd *ProductDB) GetProduct(id string) (*entity.Product, error) {
-	var product *entity.Product
-	err := pd.db.QueryRow("select id, name, description, price, category_id, image_url from products where id = ?", id).
-		Scan(&product.ID, &product.Name, &product.Description, &product.Price, &product.CategoryID, &product.ImageURL)
+	var product entity.Product
+	err := pd.db.QueryRow("select id, name, description, price, category_id, image_url from products where id = ?", id).Scan(&product.ID, &product.Name, &product.Description, &product.Price, &product.CategoryID, &product.ImageURL)
 	if err != nil {
 		return nil, err
 	}
-	return product, nil
+	return &product, nil
 }
 
 func (pd *ProductDB) GetProductsByCategoryID(categoryID string) ([]*entity.Product, error) {
@@ -57,7 +60,8 @@ func (pd *ProductDB) GetProductsByCategoryID(categoryID string) ([]*entity.Produ
 }
 
 func (pd *ProductDB) CreateProduct(product *entity.Product) (string, error) {
-	_, err := pd.db.Exec("insert into products (id, name, description, price, category_id, image_url) values (?,?,?,?,?)", product.ID, product.Name, product.Description, product.Price, product.CategoryID, product.ImageURL)
+	_, err := pd.db.Exec("insert into products (id, name, description, price, category_id, image_url) values (?, ?, ?, ?, ?, ?)",
+		product.ID, product.Name, product.Description, product.Price, product.CategoryID, product.ImageURL)
 	if err != nil {
 		return "", err
 	}
